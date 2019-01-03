@@ -20,11 +20,18 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
+z      = X * theta;
+h      = sigmoid(z);
+y_tran = transpose(y);
 
+cost   = -y_tran*log(h) - (1- y_tran)*log(1-h);
+J      = cost/m;
 
+diff   = h - y;
+X_tran = transpose(X);
 
-
-
+grad = X_tran * diff;
+grad = grad./m;    
 
 
 % =============================================================

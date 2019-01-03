@@ -19,8 +19,23 @@ grad = zeros(size(theta));
 
 
 
+z      = X * theta;
+h      = sigmoid(z);
+y_tran = transpose(y);
 
+cost         = -y_tran*log(h) - (1- y_tran)*log(1-h);
+reg          = lambda/m;
+theta_sq     = theta.^2;
+reg_theta    = (reg/2)* theta_sq;
+reg_theta(1) = 0;
+sum_reg_theta= sum(reg_theta);
+J            = cost/m + sum_reg_theta;
 
+diff   = h - y;
+X_tran = transpose(X);
+grad = X_tran * diff;
+grad = grad./m + reg*theta;  
+grad(1) = grad(1) - reg*theta(1);
 
 % =============================================================
 

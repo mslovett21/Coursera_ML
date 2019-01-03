@@ -15,10 +15,16 @@ p = zeros(m, 1);
 %               You should set p to a vector of 0's and 1's
 %
 
+z = X*theta;
+h = sigmoid(z);
 
+class_1 = find(h >= 0.5);
+class_0 = find(h < 0.5);
 
+h(class_1,1) = 1;
+h(class_0,1) = 0;
 
-
+p =h;
 
 
 % =========================================================================
