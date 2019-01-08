@@ -7,6 +7,8 @@ function p = predict(Theta1, Theta2, X)
 m = size(X, 1);
 num_labels = size(Theta2, 1);
 
+X = [ones(m, 1) X];
+
 % You need to return the following variables correctly 
 p = zeros(size(X, 1), 1);
 
@@ -22,9 +24,15 @@ p = zeros(size(X, 1), 1);
 %
 
 
+z_2 = X * transpose(Theta1);
+a_2 = sigmoid(z_2);
 
+% add a0
+a_2 = [ones(m, 1) a_2];
 
-
+z_3 = a_2 * transpose(Theta2);
+a_3 = sigmoid(z_3);
+[max_val, p] = max(a_3,[],2);
 
 
 

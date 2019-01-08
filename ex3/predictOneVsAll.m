@@ -30,7 +30,14 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
+% This will give me matrix 10 by 5000 each row i describes probability of class i for examples in the row
 
+X_tran        = transpose(X); 
+probabilities = all_theta * X_tran;
+
+[max_prob,max_index]  = max(probabilities,[],1);
+
+p = transpose(max_index);
 
 
 
