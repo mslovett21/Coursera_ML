@@ -62,6 +62,73 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% add bias term
+
+% add bias term to each of the examples
+a_1 = [ones(m, 1) X];
+z_2 = a_1 * transpose(Theta1);
+a_2 = sigmoid (z_2);
+
+% add bias term to each of the examples getting out of hidden layer
+
+n   = size(a_2,1);
+a_2 = [ones(n,1) a_2];
+z_3 = a_2 * transpose(Theta2);
+a_3 = sigmoid(z_3);
+
+%at this point we have answers from the neural network
+
+%now we need to compute the cost
+%in order to compute cost we beed to change vector of labels into one-hot encoded version
+
+labels = zeros(m,num_labels);
+
+for i=1:m
+	labels(i,y(i)) = 1;
+end
+
+%cost function -> double sum
+term1     = -labels .* log(a_3);
+term2     = (1-labels) .* log(1-a_3);
+all_cost  = term1-term2;
+cost      = sum(sum(all_cost));
+cost      = cost/m;
+
+%Add regularization to the cost
+reg1 = sum(sum(Theta1(:,2:size(Theta1)(2)).^2));
+reg2 = sum(sum(Theta2(:,2:size(Theta2)(2)).^2));
+
+reg = lambda/(2*m) * (reg1+reg2);
+
+J = cost + reg;
+
+
+%% Backpropagation algorithm
+
+%%This suppose to be implement with the for loop over all of the examples
+
+for i=1:m
+	
+	a_1_bp   = transpose([1 X(i,:)]);
+	z_2_bp   = Theta1 * a_1_bp;
+	a_2_bp   = sigmoid (z_2_bp);
+	a_2_bp   = [1; a_2_bp];
+	z_3_bp   = Theta2 * a_2_bp;
+	a_3_bp   = sigmoid(z_3_bp);
+
+	delta_3      = a_3_bp - transpose(labels(i,:));
+	delta_2      = transpose(Theta2)(2:end,:) * delta_3 .* sigmoidGradient(z_2_bp);
+	Theta2_grad  = Theta2_grad + (delta_3 * transpose(a_2_bp));
+	Theta1_grad  = Theta1_grad + (delta_2 * transpose(a_1_bp));
+end
+
+Theta1_grad = Theta1_grad ./m + (lambda/m) * [ zeros(size(Theta1,1),1) Theta1(:,2:end)];
+Theta2_grad = Theta2_grad ./m + (lambda/m) * [ zeros(size(Theta2,1),1) Theta2(:,2:end)];
+
+
+
+
+
 
 
 

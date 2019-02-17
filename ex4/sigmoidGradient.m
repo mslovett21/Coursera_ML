@@ -13,8 +13,8 @@ g = zeros(size(z));
 %               each value of z (z can be a matrix, vector or scalar).
 
 
-
-
+sig_z = (1./(1+e.^(-z)));
+g     = sig_z .* (1- sig_z)
 
 
 
